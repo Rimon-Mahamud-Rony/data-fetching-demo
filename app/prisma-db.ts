@@ -25,13 +25,17 @@ export const getProducts = async () => {
   return prisma.product.findMany();
 };
 
-export async function addProduct(data: {
-  title: string;
-  price: number;
-  description: string;
-}) {
+export async function addProduct(
+  title: string,
+  price: number,
+  description: string
+) {
   return await prisma.product.create({
-    data,
+    data: {
+      title,
+      price,
+      description,
+    },
   });
 }
 
