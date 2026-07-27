@@ -1,60 +1,112 @@
+"use client";
 import CommonPageDesign from "../components/commonPageDesign";
-import { addProduct } from "../prisma-db";
-import { redirect } from "next/navigation";
+
+import { SubmitButton } from "../components/ui/submit";
+import { useActionState } from "react";
+import { FormState, createProduct } from "../action/products";
+
+
+
+
 
 export default function AddProductsPage() {
     
-    async function createProduct( formData: FormData) {
-        "use server";
-        const title = formData.get("title") as string;
-        const price = formData.get("price") as string;
-        const description = formData.get("description") as string;
+  const initalState: FormState = {
+    errors: {},
+  };
 
-        await addProduct(title, parseInt(price), description);
-
-        redirect("/products-db");
-    }
-    
+  const [state, formAction, isPending] = useActionState(
+    createProduct,
+    initalState);    
     return (
       <CommonPageDesign>
-        <section className="relative w-full max-w-3/4 rounded-md border border-cyan-100 bg-slate-800 p-10 shadow-4xl backdrop-blur-4xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-slate-300 py-2 text-center">
-            Add Product
-          </h1>
-          <form action={createProduct} className="flex flex-col gap-4">
-            <label htmlFor="title" className="text-slate-300">
-              Product Title:
-            </label>
-            <input
-              type="text"
-              name="title"
-              placeholder="Product Title"
-              className="bg-slate-600 text-slate-300 placeholder:text-slate-500 border border-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 p-4"
-            />
-            <label htmlFor="price" className="text-slate-300">
-              Price:
-            </label>
-            <input
-              type="number"
-              name="price"
-              placeholder="Price"
-              className="bg-slate-600 text-slate-300 placeholder:text-slate-500 border border-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 p-4"
-            />
-            <label htmlFor="description" className="text-slate-300">
-              Description:
-            </label>
-            <input
-              type="text"
-              name="description"
-              placeholder="Description"
-              className="bg-slate-600 text-slate-300 placeholder:text-slate-500 border border-cyan-100 focus:outline-none focus:ring-2 focus:ring-cyan-500 p-4"
-            />
-            <button
-              type="submit"
-              className="bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-md transition duration-300"
-            >
-              Add Product
-            </button>
+        <section className="w-full max-w-2xl rounded-3xl border border-slate-700 bg-slate-900/80 p-10 shadow-2xl backdrop-blur-xl">
+          <div className="mb-8 text-center">
+            <h1 className="text-3xl font-bold text-white">Add Product</h1>
+            <p className="mt-2 text-sm text-slate-400">
+              Fill in the information below to create a new product.
+            </p>
+          </div>
+
+          <form action={formAction} className="space-y-6">
+            {/* Product Title */}
+            <div>
+              <label
+                htmlFor="title"
+                className="mb-2 block text-sm font-medium text-slate-300"
+              >
+                Product Title
+              </label>
+
+              <input
+                id="title"
+                type="text"
+                name="title"
+                placeholder="Enter product title"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              />
+
+              {state.errors.title && (
+                <p className="mt-2 text-sm text-red-400">
+                  {state.errors.title}
+                </p>
+              )}
+            </div>
+
+            {/* Price */}
+            <div>
+              <label
+                htmlFor="price"
+                className="mb-2 block text-sm font-medium text-slate-300"
+              >
+                Price
+              </label>
+
+              <input
+                id="price"
+                type="number"
+                name="price"
+                placeholder="$0.00"
+                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              />
+
+              {state.errors.price && (
+                <p className="mt-2 text-sm text-red-400">
+                  {state.errors.price}
+                </p>
+              )}
+            </div>
+
+            {/* Description */}
+            <div>
+              <label
+                htmlFor="description"
+                className="mb-2 block text-sm font-medium text-slate-300"
+              >
+                Description
+              </label>
+
+              <textarea
+                id="description"
+                name="description"
+                rows={4}
+                placeholder="Write a short description..."
+                className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              />
+
+              {state.errors.description && (
+                <p className="mt-2 text-sm text-red-400">
+                  {state.errors.description}
+                </p>
+              )}
+            </div>
+
+            <div className="pt-2">
+              <SubmitButton
+                submitText="Add Product"
+                submittingText="Adding..."
+              />
+            </div>
           </form>
         </section>
       </CommonPageDesign>

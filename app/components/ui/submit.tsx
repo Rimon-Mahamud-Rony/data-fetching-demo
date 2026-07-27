@@ -1,0 +1,24 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
+
+type SubmitButtonProps = {
+  submitText: string;
+  submittingText: string;
+};
+
+export const SubmitButton = ({ submitText, submittingText }: SubmitButtonProps) => {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className={`bg-cyan-500 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ${
+        pending ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+    >
+      {pending ? submittingText : submitText}
+    </button>
+  );
+};
