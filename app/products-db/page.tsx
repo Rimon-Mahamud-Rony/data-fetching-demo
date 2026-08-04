@@ -1,8 +1,9 @@
 import Link from "next/link";
 import CommonPageDesign from "../components/commonPageDesign";
-
-
 import { getProducts } from "@/app/prisma-db";
+import { removeProduct } from "../action/products";
+
+
 export type Product = {
   id: number;
   title: string;
@@ -12,6 +13,7 @@ export type Product = {
 
 export default async function ProductsPage() {
   const products: Product[] = await getProducts();
+  
 
   return (
     <CommonPageDesign>
@@ -61,9 +63,11 @@ export default async function ProductsPage() {
                         Edit
                       </button>
                     </Link>
-                    <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 border border-red-500 cursor-pointer">
-                      Delete
-                    </button>
+                    <form action={removeProduct.bind(null, product.id)}>
+                      <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 border border-red-500 cursor-pointer">
+                        Delete
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>
