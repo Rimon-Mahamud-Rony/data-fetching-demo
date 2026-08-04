@@ -1,0 +1,130 @@
+"use client";
+import CommonPageDesign from "../../components/commonPageDesign";
+
+import { SubmitButton } from "../../components/ui/submit";
+import { useActionState, useEffect } from "react";
+import { FormState, editProduct } from "../../action/products";
+import { Product } from "../page";
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
+
+
+
+export default function EditProductForm({ product }:{product:Product}) {
+  
+  
+  const initalState: FormState = {
+    errors: {},
+    success: false,
+  };
+
+  const editProductWithId = editProduct.bind(null, product.id);
+
+  const [state, formAction, isPending] = useActionState(
+    //editProduct, //bind na kore pathate chaile
+    editProductWithId,
+    initalState,
+  );
+
+  useEffect(() => {
+      if (state.success) {
+        toast.success("Product Updated Successfully");
+        redirect("/products-db");
+      }
+    }, [state.success]);
+
+  return (
+    <CommonPageDesign>
+      <section className="w-full max-w-2xl rounded-xl border border-slate-700 bg-slate-900/80 p-10 shadow-4xl backdrop-blur-3xl">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-yellow-400">Edit Product</h1>
+          <p className="mt-2 text-sm text-slate-400">
+            Update the information below to modify the product.
+          </p>
+        </div>
+
+        <form action={formAction} className="space-y-3">
+          <input type="hidden" name="id" value={product.id} />
+          {/* Product Title */}
+          <div>
+            <label
+              htmlFor="title"
+              className="mb-2 block text-sm font-medium text-slate-300"
+            >
+              Product Title
+            </label>
+
+            <input
+              id="title"
+              type="text"
+              name="title"
+              placeholder="Enter product title"
+              className="w-full rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              defaultValue={product.title ?? " "}
+               />
+                      
+
+            {state.errors.title && (
+              <p className="mt-2 text-sm text-red-400">{state.errors.title}</p>
+            )}
+          </div>
+
+          {/* Price */}
+          <div>
+            <label
+              htmlFor="price"
+              className="mb-2 block text-sm font-medium text-slate-300"
+            >
+              Price
+            </label>
+
+            <input
+              id="price"
+              type="number"
+              name="price"
+              placeholder="$0.00"
+              className="w-full rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              defaultValue={product.price ?? ""}  
+            />
+
+            {state.errors.price && (
+              <p className="mt-2 text-sm text-red-400">{state.errors.price}</p>
+            )}
+          </div>
+
+          {/* Description */}
+          <div>
+            <label
+              htmlFor="description"
+              className="mb-2 block text-sm font-medium text-slate-300"
+            >
+              Description
+            </label>
+
+            <textarea
+              id="description"
+              name="description"
+              rows={2}
+              placeholder="Write a short description..."
+              className="w-full resize-none rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+              defaultValue={product.description ?? " "}    
+            />
+
+            {state.errors.description && (
+              <p className="mt-2 text-sm text-red-400">
+                {state.errors.description}
+              </p>
+            )}  
+          </div>
+
+          <div className="pt-2">
+            <SubmitButton
+              submitText="Update Product"
+              submittingText="Updating..."
+            />
+          </div>
+        </form>
+      </section>
+    </CommonPageDesign>
+  );
+}

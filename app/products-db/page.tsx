@@ -1,7 +1,9 @@
+import Link from "next/link";
 import CommonPageDesign from "../components/commonPageDesign";
 
+
 import { getProducts } from "@/app/prisma-db";
-type Product = {
+export type Product = {
   id: number;
   title: string;
   price: number;
@@ -54,9 +56,11 @@ export default async function ProductsPage() {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex justify-end gap-4">
-                    <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-emerald-100 hover:text-emerald-900 border border-emerald-200 disabled:opacity-50 cursor-pointer" >
-                      Edit
-                    </button>
+                    <Link href={`/products-db/${product.id}`}>
+                      <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-emerald-100 hover:text-emerald-900 border border-emerald-200 disabled:opacity-50 cursor-pointer">
+                        Edit
+                      </button>
+                    </Link>
                     <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 border border-red-500 cursor-pointer">
                       Delete
                     </button>

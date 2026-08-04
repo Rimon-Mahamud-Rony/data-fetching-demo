@@ -4,23 +4,33 @@ import CommonPageDesign from "../components/commonPageDesign";
 import { SubmitButton } from "../components/ui/submit";
 import { useActionState } from "react";
 import { FormState, createProduct } from "../action/products";
-
-
-
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
 
 export default function AddProductsPage() {
     
   const initalState: FormState = {
     errors: {},
+    success: false,
   };
 
   const [state, formAction, isPending] = useActionState(
     createProduct,
-    initalState);    
+    initalState
+  );    
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success("Product Added Successfully");
+      redirect("/products-db");
+    }
+  }, [state.success]);
+  
     return (
       <CommonPageDesign>
-        <section className="w-full max-w-2xl rounded-3xl border border-slate-700 bg-slate-900/80 p-10 shadow-2xl backdrop-blur-xl">
+        <section className="w-full max-w-2xl rounded-xl border border-slate-700 bg-slate-900/80 p-10 shadow-4xl backdrop-blur-3xl">
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-white">Add Product</h1>
             <p className="mt-2 text-sm text-slate-400">
@@ -28,7 +38,7 @@ export default function AddProductsPage() {
             </p>
           </div>
 
-          <form action={formAction} className="space-y-6">
+          <form action={formAction} className="space-y-3">
             {/* Product Title */}
             <div>
               <label
@@ -43,7 +53,7 @@ export default function AddProductsPage() {
                 type="text"
                 name="title"
                 placeholder="Enter product title"
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+                className="w-full rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
               />
 
               {state.errors.title && (
@@ -67,7 +77,7 @@ export default function AddProductsPage() {
                 type="number"
                 name="price"
                 placeholder="$0.00"
-                className="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+                className="w-full rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
               />
 
               {state.errors.price && (
@@ -89,9 +99,9 @@ export default function AddProductsPage() {
               <textarea
                 id="description"
                 name="description"
-                rows={4}
+                rows={2}
                 placeholder="Write a short description..."
-                className="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
+                className="w-full resize-none rounded-sm border border-slate-700 bg-slate-800 px-4 py-3 text-slate-200 placeholder:text-slate-500 outline-none transition-all duration-300 focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20"
               />
 
               {state.errors.description && (

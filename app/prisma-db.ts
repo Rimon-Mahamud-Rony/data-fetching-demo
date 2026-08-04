@@ -25,6 +25,13 @@ export const getProducts = async () => {
   return prisma.product.findMany();
 };
 
+export const getProductById = async (id:string | number) => {
+  await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate a delay of 1 second
+  return prisma.product.findUnique({
+    where: { id: Number(id) },
+  });
+}
+
 export async function addProduct(
   title: string,
   price: number,
@@ -41,11 +48,17 @@ export async function addProduct(
 
 export async function updateProduct(
   id: number,
-  data: { title?: string; price?: number; description?: string },
+  title: string,
+  price: number,
+  description: string
 ) {
   return await prisma.product.update({
     where: { id },
-    data,
+    data: {
+      title,
+      price,
+      description,
+    },
   });
 }
 

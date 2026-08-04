@@ -14,7 +14,7 @@ export const SubmitButton = ({ submitText, submittingText }: SubmitButtonProps) 
     <button
       type="submit"
       disabled={pending}
-      className={`bg-cyan-500 hover:bg-cyan-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300 ${
+      className={`bg-cyan-500 hover:bg-cyan-700 text-slate-700 font-semibold py-2 px-4 rounded-md transition duration-300 cursor-pointer ${
         pending ? "opacity-50 cursor-not-allowed" : ""
       }`}
     >
