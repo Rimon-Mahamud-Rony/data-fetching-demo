@@ -2,6 +2,8 @@ import Link from "next/link";
 import CommonPageDesign from "../components/commonPageDesign";
 import { getProducts } from "@/app/prisma-db";
 import { removeProduct } from "../action/products";
+import DeleteButton from "../components/ui/deleteButton";
+
 
 
 export type Product = {
@@ -13,8 +15,6 @@ export type Product = {
 
 export default async function ProductsPage() {
   const products: Product[] = await getProducts();
-  
-
   return (
     <CommonPageDesign>
       <section className="relative w-full max-w-3/4 rounded-md border border-cyan-100 bg-slate-800 p-10 shadow-4xl backdrop-blur-4xl">
@@ -59,15 +59,16 @@ export default async function ProductsPage() {
                 <td className="px-6 py-4">
                   <div className="flex justify-end gap-4">
                     <Link href={`/products-db/${product.id}`}>
-                      <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:bg-emerald-100 hover:text-emerald-900 border border-emerald-200 disabled:opacity-50 cursor-pointer">
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                         Edit
                       </button>
                     </Link>
-                    <form action={removeProduct.bind(null, product.id)}>
-                      <button className="rounded-sm px-3 py-1.5 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50 border border-red-500 cursor-pointer">
+                    {/* <form action={removeProduct.bind(null, product.id)}>
+                      <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                         Delete
                       </button>
-                    </form>
+                    </form> */}
+                    <DeleteButton id={product.id} />
                   </div>
                 </td>
               </tr>

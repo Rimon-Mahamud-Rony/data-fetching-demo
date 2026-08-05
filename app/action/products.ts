@@ -1,7 +1,8 @@
 "use server";
 import { addProduct, updateProduct, deleteProduct } from "../prisma-db";
 import { redirect } from "next/navigation";
-
+import { Revalidate } from "next/dist/server/lib/cache-control";
+import { revalidatePath } from "next/cache";
 
 export type Error = {
   title?: string;
@@ -14,7 +15,10 @@ export type FormState = {
   success?: boolean;
 };
 
-export async function createProduct(prevState: FormState, formData: FormData): Promise<FormState> {
+export async function createProduct(
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
   const title = formData.get("title") as string;
   const price = formData.get("price") as string;
   const description = formData.get("description") as string;
@@ -43,20 +47,18 @@ export async function createProduct(prevState: FormState, formData: FormData): P
 
   //await updateProduct(title, parseInt(price), description);
   // redirect("/products-db");
-  
+
   return {
     errors: {},
     success: true,
   };
-  
-  
 }
 
 export async function editProduct(
   id: number,
   prevState: FormState,
-  formData: FormData
-) {
+  formData: FormData,
+): Promise<FormState> {
   //const id = formData.get("id") as string; //bind na kore pathate chaile
   const title = formData.get("title") as string;
   const price = formData.get("price") as string;
@@ -96,6 +98,26 @@ export async function editProduct(
   //redirect("/products-db");
 }
 
-export async function removeProduct(id: number) {
+// export async function removeProduct( id : number) {
+//   await deleteProduct(id);
+//   //revalidatePath("/products-db");
+//   //redirect("/products-db?deleted=true");
+//   return {
+//     errors: {},
+//     success: true,
+//   };
+// }
+
+export async function removeProduct(
+  id: number,
+  prevState: FormState,
+  formData: FormData,
+): Promise<FormState> {
   await deleteProduct(id);
+  //revalidatePath("/products-db");
+  //redirect("/products-db?deleted=true");
+  return {
+    errors: {},
+    success: true,
+  };
 }
