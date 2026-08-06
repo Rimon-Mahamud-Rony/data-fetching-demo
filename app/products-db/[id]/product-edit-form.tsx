@@ -6,11 +6,14 @@ import { useActionState, useEffect } from "react";
 import { FormState, editProduct } from "../../action/products";
 import { Product } from "../page";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+//import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 
 export default function EditProductForm({ product }:{product:Product}) {
+  
+  const router = useRouter();
   
   
   const initalState: FormState = {
@@ -29,7 +32,8 @@ export default function EditProductForm({ product }:{product:Product}) {
   useEffect(() => {
       if (state.success) {
         toast.success("Product Updated Successfully");
-        redirect("/products-db");
+        //redirect("/products-db");
+         router.push("/products-db"); //client side navigation 
       }
     }, [state.success]);
 

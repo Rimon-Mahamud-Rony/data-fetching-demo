@@ -3,6 +3,7 @@ import { useActionState, useEffect } from "react";
 import { FormState, removeProduct } from "@/app/action/products";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 // const initialState = {
@@ -17,6 +18,8 @@ const initialState: FormState = {
  
 export default function DeleteButton({ id }: { id: number }) {
 
+  const router = useRouter();
+
     const removeProductWithId = removeProduct.bind(null, id);
     
     const [state, formAction, pending] = useActionState(
@@ -27,7 +30,8 @@ export default function DeleteButton({ id }: { id: number }) {
     useEffect(() => {
       if (state.success) {
           toast.success("Product deleted successfully!");
-          redirect("/products-db");
+          //redirect("/products-db");
+          router.push("/products-db"); //client side navigation
       }
     }, [state]);
 

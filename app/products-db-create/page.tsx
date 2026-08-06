@@ -5,12 +5,15 @@ import { SubmitButton } from "../components/ui/submit";
 import { useActionState } from "react";
 import { FormState, createProduct } from "../action/products";
 import { toast } from "react-toastify";
-import { redirect } from "next/navigation";
+//import { redirect } from "next/navigation";
+import {useRouter} from "next/navigation";
 import { useEffect } from "react";
 import Link from "next/link"
 
 
 export default function AddProductsPage() {
+
+  const router = useRouter();
     
   const initalState: FormState = {
     errors: {},
@@ -25,7 +28,8 @@ export default function AddProductsPage() {
   useEffect(() => {
     if (state.success) {
       toast.success("Product Added Successfully");
-     redirect("/products-db");
+     //redirect("/products-db");
+      router.push("/products-db"); //client side navigation
     }
   }, [state.success]);
   
