@@ -7,6 +7,7 @@ import { FormState, createProduct } from "../action/products";
 import { toast } from "react-toastify";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
+import Link from "next/link"
 
 
 export default function AddProductsPage() {
@@ -24,7 +25,7 @@ export default function AddProductsPage() {
   useEffect(() => {
     if (state.success) {
       toast.success("Product Added Successfully");
-      redirect("/products-db");
+     redirect("/products-db");
     }
   }, [state.success]);
   
@@ -34,7 +35,8 @@ export default function AddProductsPage() {
           <div className="mb-8 text-center">
             <h1 className="text-3xl font-bold text-white">Add Product</h1>
             <p className="mt-2 text-sm text-slate-400">
-              Fill in the information below to create a new product.
+              Fill in the information below to create a new product. {"  "}
+            <Link href="products-db" className="text-sm text-yellow-300 underline">Product List </Link>
             </p>
           </div>
 

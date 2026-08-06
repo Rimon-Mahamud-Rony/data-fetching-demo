@@ -18,9 +18,28 @@ export default async function ProductsPage() {
   return (
     <CommonPageDesign>
       <section className="relative w-full max-w-3/4 rounded-md border border-cyan-100 bg-slate-800 p-10 shadow-4xl backdrop-blur-4xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-300 py-2 text-center">
-          Products
-        </h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 justify-end mb-4">
+          <div className="flex justify-end">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-300 py-2 text-center">
+              ALL PRODUCTS
+            </h1>
+          </div>
+
+          <div className="flex justify-end">
+            <div>
+              <h1 className="text-xl font-semibold text-slate-300  text-center">
+                Add Products
+              </h1>
+            </div>
+            <div>
+              <Link href="/products-db-create">
+                <button className="bg-green-500 hover:bg-green-700 text-white cursor-pointer rounded-full shadow-2xl w-8 h-8 flex items-center justify-center ml-2">
+                  +
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
 
         <table className="w-full text-left text-sm ">
           <thead>
@@ -59,7 +78,7 @@ export default async function ProductsPage() {
                 <td className="px-6 py-4">
                   <div className="flex justify-end gap-4">
                     <Link href={`/products-db/${product.id}`}>
-                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
                         Edit
                       </button>
                     </Link>
