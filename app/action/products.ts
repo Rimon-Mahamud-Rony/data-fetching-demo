@@ -47,7 +47,6 @@ export async function createProduct(
 
   //await updateProduct(title, parseInt(price), description);
   // redirect("/products-db");
-
   return {
     errors: {},
     success: true,
@@ -66,7 +65,7 @@ export async function editProduct(
 
   const errors: Error = {};
 
-  if (!title) {
+  if (!title) { 
     errors.title = "Title is required";
   }
 
@@ -110,11 +109,16 @@ export async function editProduct(
 
 export async function removeProduct(
   id: number,
+  shouldRevalidate: boolean, // 👈 নতুন flag
   prevState: FormState,
   formData: FormData,
 ): Promise<FormState> {
+  //await new Promise(resolve => setTimeout(resolve, 1500));
   await deleteProduct(id);
-  //revalidatePath("/products-db");
+  
+    if (shouldRevalidate) {
+      revalidatePath("/product-bd");
+    }
   //redirect("/products-db?deleted=true");
   return {
     errors: {},

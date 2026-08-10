@@ -21,7 +21,7 @@ export const seedProducts = async () => {
 };
 
 export const getProducts = async () => {
-  await seedProducts();
+  //await seedProducts();
   return prisma.product.findMany();
 };
 
